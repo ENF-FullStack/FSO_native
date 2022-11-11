@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text } from "react-native";
+import { Link } from 'react-router-native'
 
 const styles = StyleSheet.create({
     text: {
@@ -10,10 +11,12 @@ const styles = StyleSheet.create({
     }
 })
 
-const AppBarHeader = ({ header }) => {
+const AppBarHeader = ({ header, link }) => {
     return (
         <Pressable>
-            <Text style={styles.text}>{header}</Text>
+            <Link to={link}>
+                <Text style={styles.text}>{header}</Text>
+            </Link>
         </Pressable>
     )
 }
