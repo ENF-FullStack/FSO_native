@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 16,
         fontWeight: "600",
-        color: "#FFFFFF",
+        color: "#ffffff",
         paddingVertical: 14,
         paddingHorizontal: 10
     }

@@ -1,7 +1,7 @@
-import Text from './Text';
+import SignInForm from './SignInForm';
 
 const SignIn = () => {
-  return <Text>The sign in view</Text>;
+  return <SignInForm />;
 };
 
 export default SignIn;
