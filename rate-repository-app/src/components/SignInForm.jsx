@@ -51,13 +51,7 @@ const CheckForm = ({ onSubmit }) => {
     )
 }
 
-const SignInForm = () => {
-    const onSubmit = (values) => {
-        const username = values.username;
-        const password = values.password;
-
-        console.log(values)
-    }
+const SignInForm = ({ onSubmit }) => {
     return (
         <Formik
             initialValues={initValues}
