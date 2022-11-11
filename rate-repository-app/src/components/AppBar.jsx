@@ -6,15 +6,17 @@ import AppBarHeader from './AppBarHeader';
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.navBackground,
     flexDirection: 'row',
   },
 });
 
 const AppBar = () => {
-  return <View style={styles.container}>
+  return (
+  <View style={styles.container}>
     <AppBarHeader header={'Repositories'} />
-  </View>;
+  </View>
+  )
 };
 
 export default AppBar;

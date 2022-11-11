@@ -1,28 +1,42 @@
-import { View, StyleSheet, Text, StatusBar } from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
+import Statistics from './Stats'
+import Details from './Details'
 
-const RepoItem = ({ item }) => (
-  <View style={styles.item}>
-    <Text>Full name: {item.fullName}</Text>
-    <Text>Description: {item.description}</Text>
-    <Text>Language: {item.language}</Text>
-    <Text>Stars: {item.stargazersCount}</Text>
-    <Text>Forks: {item.forksCount}</Text>
-    <Text>Reviews: {item.reviewCount}</Text>
-    <Text>Rating: {item.ratingAverage}</Text>
+const RepoItem = ({ item }) => {
+  return (
+  <View style={styles.container}>
+    <View style={styles.details}>
+      <Image style={styles.icon} source={{ uri: item.ownerAvatarUrl }} />
+      <Details name={item.fullName} description={item.description} language={item.language}/>
+    </View>
+
+    <View style={styles.stats}>
+      <Statistics label={'Stars'} value={item.stargazersCount}/>
+      <Statistics label={'Forks'} value={item.forksCount}/>
+      <Statistics label={'Reviews'} value={item.reviewCount}/>
+      <Statistics label={'Rating'} value={item.ratingAverage}/>
+    </View>
   </View>
-)
+  )
+}
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      marginTop: StatusBar.currentHeight || 0,
+      backgroundColor: '#ffffff'
     },
-    item: {
-      backgroundColor: '#ffffff',
-      padding: 10,
-      marginVertical: 2,
-      marginHorizontal: 16,
+    stats: {
+      flexDirection: 'row',
+      justifyContent: 'space-around'
     },
+    details: {
+      flexDirection: 'row'
+    },
+    icon: {
+      height: 50,
+      width: 50,
+      borderRadius: 4,
+      margin: 10
+    }
   });
 
 export default RepoItem;
