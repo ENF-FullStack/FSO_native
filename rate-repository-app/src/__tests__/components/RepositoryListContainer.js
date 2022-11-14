@@ -2,6 +2,8 @@
 import React from 'react';
 import { RepositoryListContainer } from '../../components/RepositoryTestList';
 import { render } from '@testing-library/react-native';
+import checkValue from '../../utils/checkValue'
+
 
 describe('RepositoryList', () => {
     describe('RepositoryListContainer', () => {
@@ -54,22 +56,70 @@ describe('RepositoryList', () => {
             <RepositoryListContainer repositories={repositories} />
         );
 
-        debug();
+        // debug();
         
         const repositoryItems = getAllByTestId('repositoryItem');
         
         //* Testing component lengths
         expect(repositoryItems).toHaveLength(2);
 
-        //* Testing component names
-        //* Testing component description
-        //* Testing component language
-        //* Testing component forks count
-        //* Testing component stargazers count
-        //* Testing component rating average
-        //* Testing component review count
+        const [firstRepositoryItem, secondRepositoryItem] = repositoryItems;
 
-        
+        //* Testing component names
+        expect(firstRepositoryItem).toHaveTextContent(
+          repositories.edges[0].node.fullName
+        )
+        expect(secondRepositoryItem).toHaveTextContent(
+          repositories.edges[1].node.fullName
+        )
+
+        //* Testing component description
+        expect(firstRepositoryItem).toHaveTextContent(
+          repositories.edges[0].node.description
+        )
+        expect(secondRepositoryItem).toHaveTextContent(
+          repositories.edges[1].node.description
+        )
+
+        //* Testing component language
+        expect(firstRepositoryItem).toHaveTextContent(
+          repositories.edges[0].node.language
+        )
+        expect(secondRepositoryItem).toHaveTextContent(
+          repositories.edges[1].node.language
+        )
+
+        //* Testing component forks count
+        expect(firstRepositoryItem).toHaveTextContent(
+          checkValue(repositories.edges[0].node.forksCount)
+        )
+        expect(secondRepositoryItem).toHaveTextContent(
+          checkValue(repositories.edges[1].node.forksCount)
+        )
+
+        //* Testing component stargazers count
+        expect(firstRepositoryItem).toHaveTextContent(
+          checkValue(repositories.edges[0].node.stargazersCount)
+        )
+        expect(secondRepositoryItem).toHaveTextContent(
+          checkValue(repositories.edges[1].node.stargazersCount)
+        )
+
+        //* Testing component rating average
+        expect(firstRepositoryItem).toHaveTextContent(
+          repositories.edges[0].node.ratingAverage
+        )
+        expect(secondRepositoryItem).toHaveTextContent(
+          repositories.edges[1].node.ratingAverage
+        )
+
+        //* Testing component review count
+        expect(firstRepositoryItem).toHaveTextContent(
+          repositories.edges[0].node.reviewCount
+        )
+        expect(secondRepositoryItem).toHaveTextContent(
+          repositories.edges[1].node.reviewCount
+        )
       });
     });
   });

@@ -1,0 +1,46 @@
+npm WARN ERESOLVE overriding peer dependency
+npm WARN While resolving: rate-repository-app@1.0.0
+npm WARN Found: react@18.0.0
+npm WARN node_modules/react
+npm WARN   peerOptional react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @apollo/client@3.7.1
+npm WARN   node_modules/@apollo/client
+npm WARN     @apollo/client@"^3.7.1" from the root project
+npm WARN   11 more (@testing-library/jest-native, ...)
+npm WARN 
+npm WARN Could not resolve dependency:
+npm WARN peer react@"17.0.2" from react-test-renderer@17.0.2
+npm WARN node_modules/react-test-renderer
+npm WARN   peer react-test-renderer@">=16.0.0" from @testing-library/jest-native@5.2.0
+npm WARN   node_modules/@testing-library/jest-native
+npm WARN   2 more (@testing-library/react-native, the root project)
+npm WARN ERESOLVE overriding peer dependency
+npm WARN While resolving: rate-repository-app@1.0.0
+npm WARN Found: react@18.0.0
+npm WARN node_modules/react
+npm WARN   peerOptional react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @apollo/client@3.7.1
+npm WARN   node_modules/@apollo/client
+npm WARN     @apollo/client@"^3.7.1" from the root project
+npm WARN   11 more (@testing-library/jest-native, ...)
+npm WARN 
+npm WARN Could not resolve dependency:
+npm WARN peer react@"17.0.2" from react-test-renderer@17.0.2
+npm WARN node_modules/react-test-renderer
+npm WARN   peer react-test-renderer@">=16.0.0" from @testing-library/jest-native@5.2.0
+npm WARN   node_modules/@testing-library/jest-native
+npm WARN   2 more (@testing-library/react-native, the root project)
+npm WARN ERESOLVE overriding peer dependency
+npm WARN While resolving: rate-repository-app@1.0.0
+npm WARN Found: react@18.0.0
+npm WARN node_modules/react
+npm WARN   peerOptional react@"^16.8.0 || ^17.0.0 || ^18.0.0" from @apollo/client@3.7.1
+npm WARN   node_modules/@apollo/client
+npm WARN     @apollo/client@"^3.7.1" from the root project
+npm WARN   11 more (@testing-library/jest-native, ...)
+npm WARN 
+npm WARN Could not resolve dependency:
+npm WARN peer react@"17.0.2" from react-test-renderer@17.0.2
+npm WARN node_modules/react-test-renderer
+npm WARN   peer react-test-renderer@">=16.0.0" from @testing-library/jest-native@5.2.0
+npm WARN   node_modules/@testing-library/jest-native
+npm WARN   2 more (@testing-library/react-native, the root project)
+
