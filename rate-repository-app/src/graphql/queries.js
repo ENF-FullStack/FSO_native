@@ -31,3 +31,22 @@ export const ME = gql`
     }
   }
 `
+
+export const GET_REPO = gql`
+  query ($repoId: ID!) {
+    repository(id: $repoId) {
+      id
+      ownerName
+      name
+      fullName
+      ratingAverage
+      stargazersCount
+      forksCount
+      ownerAvatarUrl
+      description
+      language
+      createdAt
+      url
+    }
+  }
+`

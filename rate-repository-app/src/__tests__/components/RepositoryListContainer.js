@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { RepositoryListContainer } from '../../components/RepositoryTestList';
+import { RepositoryListContainer } from '../../components/RepositoryList';
 import { render } from '@testing-library/react-native';
 import checkValue from '../../utils/checkValue'
 
