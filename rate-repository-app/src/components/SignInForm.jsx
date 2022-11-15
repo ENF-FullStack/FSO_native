@@ -51,7 +51,7 @@ const CheckForm = ({ onSubmit }) => {
     )
 }
 
-const SignInForm = ({ onSubmit }) => {
+export const SignInForm = ({ onSubmit }) => {
     return (
         <Formik
             initialValues={initValues}
