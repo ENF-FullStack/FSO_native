@@ -1,28 +1,28 @@
-import { View, StyleSheet } from 'react-native'
-import Text from './Text'
+import { View, StyleSheet } from "react-native";
+import Text from "./Text";
 
-import theme from '../theme'
+import theme from "../theme";
 
 const styles = StyleSheet.create({
-    container: {
-      margin: 10,
-      flexShrink: 1,
-    },
-    language: {
-      color: "white",
-      backgroundColor: theme.colors.primary,
-      borderRadius: 5,
-      paddingHorizontal: 5,
-      paddingVertical: 2,
-      marginVertical: 5,
-    },
-    languages: {
-      flexDirection: "row",
-    },
-  });
+  container: {
+    margin: 10,
+    flexShrink: 1,
+  },
+  language: {
+    color: "white",
+    backgroundColor: theme.colors.primary,
+    borderRadius: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    marginVertical: 5,
+  },
+  languages: {
+    flexDirection: "row",
+  },
+});
 
 const Details = ({ name, description, language }) => {
-    return (
+  return (
     <View style={styles.container}>
       <Text style={{ marginVertical: 3 }} fontWeight={"bold"}>
         {name}
@@ -34,7 +34,7 @@ const Details = ({ name, description, language }) => {
         <Text style={styles.language}>{language}</Text>
       </View>
     </View>
-    )
-}
+  );
+};
 
-export default Details
+export default Details;

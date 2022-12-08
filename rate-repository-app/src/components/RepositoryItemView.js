@@ -1,99 +1,152 @@
-import React from 'react'
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { useNavigate } from 'react-router-native'
-import Text from './Text'
+import { View, Image, StyleSheet, Pressable } from "react-native";
+import Text from "./Text";
 
-import theme from '../theme'
+import theme from "../theme";
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff'
+    padding: 10,
+    backgroundColor: "#ffffff",
+    display: "flex",
   },
-  column: {
-    flexDirection: 'column',
-    alignItems: 'baseline'
+  upper: {
+    display: "flex",
+    flexDirection: "row",
+    paddingBottom: 10,
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around'
+  upperLeft: {
+    paddingLeft: 5,
+    paddingRight: 15,
+    paddingTop: 5,
   },
-  infoItem: {
-    flexDirection: 'column',
-    textAlign: 'center'
+  upperRight: {
+    paddingRight: 10,
+    flexDirection: "column",
+    flexShrink: 1,
+    alignItems: "flex-start",
+  },
+  upperRightItems: {
+    marginVertical: 3,
+  },
+  lower: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
+  icons: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  iconText: {
+    alignSelf: "center",
   },
   avatar: {
-    flexDirection: 'column',
-    width: 40,
-    height: 40,
-    marginRight: 10,
-    borderRadius: 8
+    width: 50,
+    height: 50,
   },
-  language: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    backgroundColor: theme.colors.primary,
-    padding: 8,
-    marginTop: 10,
-    marginBottom: 10,
-    borderRadius: 6
-  }
-})
+  languageButton: {
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: theme.colors.textPrimary,
+    padding: 7,
+  },
+  languageText: {
+    color: "white",
+  },
+});
 
 const InfoItem = ({ value, title, testID }) => {
   return (
-    <View styles={styles.infoItem} testID={testID}>
+    <View testID={testID}>
       {value >= 1000 ? (
-        <Text fontWeight='bold' align='center'>{`${(value / 1000).toFixed(
+        <Text fontWeight="bold" align="center">{`${(value / 1000).toFixed(
           1
         )}k`}</Text>
-      ): (
-        <Text fontWeight='bold' align='center'>
+      ) : (
+        <Text fontWeight="bold" align="center">
           {value}
         </Text>
       )}
-      <Text color='textSecondary'>{title}</Text>
+      <Text color="textSecondary">{title}</Text>
     </View>
-  )
-}
+  );
+};
 
-const TopBar = ({ ownerAvatarUrl, fullName, description, language }) => (
-  <View>
-    <Image style={styles.avatar} source={{ uri: ownerAvatarUrl }} testID='avatarUrl' />
-    <View>
-      <Text>{fullName}</Text>
-      <Text>{description}</Text>
-      <Text>{language}</Text>
-    </View>
-  </View>
-)
-const BottomBar = ({
-  stargazersCount,
-  forksCount,
-  reviewCount,
-  ratingAverage
-}) => (
-  <View style={styles.row}>
-    <InfoItem value={stargazersCount} title='Stars' testID='stargazersCount' />
-    <InfoItem value={forksCount} title='Forks' testID='forksCount' />
-    <InfoItem value={reviewCount} title='Reviews' testID='reviewCount' />
-    <InfoItem value={ratingAverage} title='Rating' testID='ratingAverage' />
-  </View>
-)
+//? 11.20 make language-pressable, include styles
 
-// ? 10.19 view to individual RepositoryItem
-
-const RepositoryItemView = (props) => {
-  const navigate = useNavigate()
-
+const RepoItemView = ({ repository }) => {
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => navigate(`/${props.id}`)}>
-      <TopBar {...props} />
-      <BottomBar {...props} />
-      {props.children}
-    </TouchableOpacity>
-  )
-}
+    <View style={styles.container} testID="repositoryItem">
+      <View style={styles.upper}>
+        <View style={styles.upperLeft}>
+          <Image
+            style={styles.avatar}
+            source={{ uri: `${repository.ownerAvatarUrl}` }}
+            testID="avatarUrl"
+          />
+        </View>
 
-export default RepositoryItemView
+        <View style={styles.upperRight}>
+          <Text
+            style={styles.upperRightItems}
+            fontWeight="bold"
+            fontSize="subheading"
+          >
+            {repository.fullName}
+          </Text>
+          <Text style={styles.upperRightItems} color="textSecondary">
+            {repository.description}
+          </Text>
+          <Pressable style={[styles.languageButton, styles.upperRightItems]}>
+            <Text style={styles.languageText}>{repository.language}</Text>
+          </Pressable>
+        </View>
+      </View>
+      <View style={styles.lower}>
+        <View style={styles.icons}>
+          <View style={styles.iconText}>
+            <InfoItem
+              value={repository.stargazersCount}
+              title="Stars"
+              testID="stargazersCount"
+            />
+          </View>
+        </View>
+
+        <View style={styles.icons}>
+          <View style={styles.iconText}>
+            <InfoItem
+              value={repository.forksCount}
+              title="Forks"
+              testID="forksCount"
+            />
+          </View>
+        </View>
+
+        <View style={styles.icons}>
+          <View style={styles.iconText}>
+            <InfoItem
+              value={repository.reviewCount}
+              title="Reviews"
+              testID="reviewCount"
+            />
+          </View>
+        </View>
+
+        <View style={styles.icons}>
+          <View style={styles.iconText}>
+            <InfoItem
+              value={repository.ratingAverage}
+              title="Rating"
+              testID="ratingAverage"
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default RepoItemView;

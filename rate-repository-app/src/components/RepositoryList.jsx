@@ -1,44 +1,45 @@
 /* eslint-disable no-unused-vars */
-import { FlatList, View, StyleSheet, Pressable } from 'react-native';
-import RepoItemView from './RepositoryItemView';
-import useRepositories from '../hooks/useRepositories';
-// import { useNavigate } from 'react-router-native';
+import { FlatList, View, StyleSheet, Pressable } from "react-native";
+import RepoItemView from "./RepositoryItemView";
+import useRepositories from "../hooks/useRepositories";
+import { useNavigate } from "react-router-native";
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
-    backgroundColor: '#cccccc'
   },
 });
 
-const ItemSeparator = () => <View style={styles.separator} />
+const ItemSeparator = () => <View style={styles.separator} />;
 
 export const RepositoryListContainer = ({ repositories }) => {
-  // let navigate = useNavigate()
-  
-  const repositoryNodes = repositories
-    ? repositories.edges.map(edge => edge.node)
-    : [];
+  const navigate = useNavigate();
 
-  // const onPress = (id) => navigate(`/repository/${id}`)
+  const onOpenRepo = (id) => {
+    navigate(`/${id}`);
+  };
+
+  const repositoryNodes = repositories
+    ? repositories.edges.map((edge) => edge.node)
+    : [];
 
   return (
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
-      // renderItem={renderItem}
+      keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => (
-        // <Pressable onPress={() => onPress(item.id)} >
-          <RepoItemView key={item.id} {...item} />
-        // </Pressable>
+        <Pressable onPress={() => onOpenRepo(item.id)}>
+          <RepoItemView repository={item} />
+        </Pressable>
       )}
     />
   );
 };
 
 const RepositoryList = () => {
-    const { repositories } = useRepositories();
-    return <RepositoryListContainer repositories={repositories} />;
+  const { repositories } = useRepositories();
+  return <RepositoryListContainer repositories={repositories} />;
 };
 
 export default RepositoryList;
