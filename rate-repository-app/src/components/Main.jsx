@@ -1,8 +1,9 @@
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Route, Routes, Navigate } from 'react-router-native'
 
 import RepoList from './RepositoryList'
-import RepoItemView from './RepositoryItemView'
+import RepoItem from './RepositoryItem'
 import AppBar from './AppBar'
 import SignIn from './SignIn'
 
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     flexShrink: 1,
-    backgroundColor: theme.colors.mainBackgroud,
+    backgroundColor: theme.colors.mainBackground,
   }
 })
  
@@ -23,13 +24,13 @@ const Main = () => {
     <View style={styles.container}>
       <AppBar />
       <Routes>
-        <Route path='/' element={<RepoList />} exact />
         <Route path='/signin' element={<SignIn />} exact />
-        <Route path='/repository/:id' element={<RepoItemView />} exact />
+        <Route path='/' element={<RepoList />} exact />
+        <Route path='/:id' element={<RepoItem />} exact />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </View>
-  );
-};
+  )
+}
 
 export default Main;

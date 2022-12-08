@@ -33,8 +33,8 @@ export const ME = gql`
 `
 
 export const GET_REPO = gql`
-  query ($repoId: ID!) {
-    repository(id: $repoId) {
+  query ($id: ID!) {
+    repository(id: $id) {
       id
       ownerName
       name

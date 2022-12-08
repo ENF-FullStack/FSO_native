@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { FlatList, View, StyleSheet, Pressable } from 'react-native';
-import RepoItem from './RepositoryItem';
+import RepoItemView from './RepositoryItemView';
 import useRepositories from '../hooks/useRepositories';
-import { useNavigate } from 'react-router-native';
+// import { useNavigate } from 'react-router-native';
 
 const styles = StyleSheet.create({
   separator: {
@@ -13,26 +13,24 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />
 
-// ? 10.19 navigate to route, onPress wrap to RepoItem
-
 export const RepositoryListContainer = ({ repositories }) => {
-  let navigate = useNavigate()
+  // let navigate = useNavigate()
   
   const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
     : [];
 
-  const onPress = (id) => navigate(`/repository/${id}`)
+  // const onPress = (id) => navigate(`/repository/${id}`)
 
   return (
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       // renderItem={renderItem}
-      renderItem={({ item, index, separators }) => (
-        <Pressable onPress={() => onPress(item.id)} >
-          <RepoItem key={item.id} item={item} />
-        </Pressable>
+      renderItem={({ item }) => (
+        // <Pressable onPress={() => onPress(item.id)} >
+          <RepoItemView key={item.id} {...item} />
+        // </Pressable>
       )}
     />
   );
