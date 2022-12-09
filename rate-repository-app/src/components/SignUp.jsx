@@ -45,7 +45,7 @@ const validationSchema = yup.object().shape({
     .min(5, "Password must be >= 5")
     .max(50, "Password must be <= 50")
     .required("Password required"),
-  confirmPassword: yup
+  passwordConfirm: yup
     .string()
     .oneOf([yup.ref("password"), null], "Passwords should match")
     .required("Password confirmation required"),
@@ -88,13 +88,10 @@ const SignUp = () => {
 
   const onSubmit = async (values) => {
     const { username, password } = values;
-    console.log("🚀 ~ file: SignUp.jsx:90 ~ onSubmit ~ username", username);
 
     try {
       await signUp({ username, password });
-      console.log("🚀 ~ file: SignUp.jsx:94 ~ onSubmit ~ signUp", signUp);
       await signIn({ username, password });
-      console.log("🚀 ~ file: SignUp.jsx:96 ~ onSubmit ~ signIn", signIn);
       navigate("/");
     } catch (error) {
       console.log(error);
