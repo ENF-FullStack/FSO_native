@@ -42,16 +42,17 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal>
         <AppBarHeader header={"Repositories"} link={"/"} />
-        {!me && <AppBarHeader header={"Sign in"} link={"/signin"} />}
-        {!!me && (
+        {me ? (
           <>
-            {/* <Link to="/createreview" style={styles.scrollItems}>
-              <Text style={styles.text}>Create review</Text>
-            </Link> */}
             <AppBarHeader header={"Create review"} link={"/createreview"} />
             <Pressable onPress={signOut}>
               <Text style={styles.text}>Sign out</Text>
             </Pressable>
+          </>
+        ) : (
+          <>
+            <AppBarHeader header={"Sign in"} link={"/signin"} />
+            <AppBarHeader header={"Sign up"} link={"/signup"} />
           </>
         )}
       </ScrollView>

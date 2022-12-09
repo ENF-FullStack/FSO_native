@@ -52,6 +52,7 @@ const validationSchema = yup.object().shape({
 });
 
 const SignUpForm = ({ onSubmit }) => {
+  console.log("signupform");
   return (
     <View style={styles.credentials}>
       <FormikTextInput name="username" placeholder="Username" />
@@ -87,10 +88,13 @@ const SignUp = () => {
 
   const onSubmit = async (values) => {
     const { username, password } = values;
+    console.log("🚀 ~ file: SignUp.jsx:90 ~ onSubmit ~ username", username);
 
     try {
       await signUp({ username, password });
+      console.log("🚀 ~ file: SignUp.jsx:94 ~ onSubmit ~ signUp", signUp);
       await signIn({ username, password });
+      console.log("🚀 ~ file: SignUp.jsx:96 ~ onSubmit ~ signIn", signIn);
       navigate("/");
     } catch (error) {
       console.log(error);
