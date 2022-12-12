@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import { FlatList, View, StyleSheet, Pressable } from "react-native";
+import { FlatList, Pressable, StyleSheet, TextInput, View } from "react-native";
 import RepoItemView from "./RepositoryItemView";
 import useRepositories from "../hooks/useRepositories";
 import { useNavigate } from "react-router-native";
-import { Button, Menu, Divider, Provider } from "react-native-paper";
+import { Button, Menu, Provider, Searchbar } from "react-native-paper";
+import { useDebounce } from "use-debounce";
+import Text from "./Text";
 
 const styles = StyleSheet.create({
   separator: {
@@ -12,18 +14,76 @@ const styles = StyleSheet.create({
   },
 });
 
+const orderOptions = [
+  { title: "Most rated repositories", value: "mostRated" },
+  { title: "Least rated repositories", value: "leastRated" },
+  { title: "Latest repositories", value: "latest" },
+  { title: "Oldest repositories", value: "oldest" },
+];
+
+const orderValues = {
+  mostRated: {
+    orderBy: "RATING_AVERAGE",
+    orderDirection: "DESC",
+  },
+  leastRated: { orderBy: "RATING_AVERAGE", orderDirection: "ASC" },
+  latest: { orderBy: "CREATED_AT", orderDirection: "DESC" },
+  oldest: { orderBy: "CREATED_AT", orderDirection: "ASC" },
+};
+
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({
-  repositories,
-  sortBy,
-  setSortBy,
-}) => {
-  const navigate = useNavigate();
-
+const RepositoryListHeader = ({ orderBy, onOrderBy, filter, onFilter }) => {
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
+  return (
+    <Provider>
+      <View>
+        <Searchbar
+          value={filter}
+          onChangeText={onFilter}
+          placeholder="Type to filter"
+        ></Searchbar>
+        <TextInput
+          style={{
+            width: 300,
+            backgroundColor: "transparent",
+            margin: 0,
+            padding: 0,
+          }}
+          label="Choice"
+          value={orderBy}
+          onChangeText={(itemValue) => onOrderBy(itemValue)}
+        />
+        <Menu
+          visible={visible}
+          onDismiss={closeMenu}
+          anchor={
+            <Button onPress={openMenu} icon="menu" dark={true} color="#ffffff">
+              Show menu
+            </Button>
+          }
+          onValueChange={onOrderBy}
+          selectedValue={orderBy}
+        >
+          {orderOptions.map(({ value, title }) => (
+            <Menu.Item key={value} title={title} value={value} />
+          ))}
+        </Menu>
+      </View>
+    </Provider>
+  );
+};
+
+export const RepositoryListContainer = ({
+  orderBy,
+  onOrderBy,
+  filter,
+  onFilter,
+  repositories,
+}) => {
+  const navigate = useNavigate();
 
   const onOpenRepo = (id) => {
     navigate(`/${id}`);
@@ -34,65 +94,48 @@ export const RepositoryListContainer = ({
     : [];
 
   return (
-    <Provider>
-      <View
-        style={{
-          paddingTop: 20,
-          flexDirection: "row",
-          justifyContent: "center",
-          color: "#ffffff",
-          fontWeight: "bold",
-        }}
-      >
-        <FlatList
-          data={repositoryNodes}
-          ItemSeparatorComponent={ItemSeparator}
-          ListHeaderComponent={() => (
-            <Menu
-              visible={visible}
-              onDismiss={closeMenu}
-              anchor={<Button onPress={openMenu}>Show menu</Button>}
-              // selectedValue={sortBy}
-              // onValueChange={(itemValue) => setSortBy(itemValue)}
-            >
-              <Menu.Item
-                onPress={() => setSortBy("latest")}
-                title="Latest repositories"
-                value="latest"
-              />
-              <Menu.Item
-                onPress={() => setSortBy("highestRated")}
-                title="Highest rated repositories"
-                value="highestRated"
-              />
-              <Menu.Item
-                onPress={() => setSortBy("lowestRated")}
-                title="Lowest rated repositories"
-                value="lowestRated"
-              />
-            </Menu>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <Pressable onPress={() => onOpenRepo(item.id)}>
-              <RepoItemView repository={item} />
-            </Pressable>
-          )}
+    <FlatList
+      data={repositoryNodes}
+      ItemSeparatorComponent={ItemSeparator}
+      keyExtractor={(item, index) => index.toString()}
+      ListHeaderComponent={
+        <RepositoryListHeader
+          orderBy={orderBy}
+          onOrderBy={onOrderBy}
+          filter={filter}
+          onFilter={onFilter}
         />
-      </View>
-    </Provider>
+      }
+      renderItem={({ item }) => (
+        <Pressable onPress={() => onOpenRepo(item.id)}>
+          <RepoItemView repository={item} />
+        </Pressable>
+      )}
+    />
   );
 };
 
 const RepositoryList = () => {
-  const [sortBy, setSortBy] = useState("latest");
-  const { repositories } = useRepositories(sortBy);
+  const [orderBy, setOrderBy] = useState("latest");
+  const [filter, setFilter] = useState("");
+  const [debounced] = useDebounce(filter, 500);
+
+  const { repositories } = useRepositories({
+    ...orderValues[orderBy],
+    searchKeyword: debounced,
+  });
+
+  // if (repositories.loading) {
+  //   return <View><Text>loading repositories...</Text></View>
+  // }
 
   return (
     <RepositoryListContainer
       repositories={repositories}
-      sortBy={sortBy}
-      setSortBy={setSortBy}
+      orderBy={orderBy}
+      onOrderBy={(orderBy) => setOrderBy(orderBy)}
+      filter={filter}
+      onFilter={(filter) => setFilter(filter)}
     />
   );
 };
