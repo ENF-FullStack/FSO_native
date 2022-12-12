@@ -1,5 +1,10 @@
 import { gql } from "@apollo/client";
-import { REPO_DETAILS, REVIEW_DETAILS } from "./fragments";
+import {
+  REPO_DETAILS,
+  REVIEW_DETAILS,
+  PAGE_INFO,
+  USER_DETAILS,
+} from "./fragments";
 
 export const GET_REPOS = gql`
   query (
@@ -20,15 +25,32 @@ export const GET_REPOS = gql`
         node {
           ...RepoDetails
         }
+        cursor
+      }
+      pageInfo {
+        ...PageInfo
       }
     }
   }
   ${REPO_DETAILS}
+  ${PAGE_INFO}
 `;
 
 // export const GET_REPOS = gql`
-//   query {
-//     repositories {
+//   query (
+//     $first: Int
+//     $after: String
+//     $searchKeyword: String
+//     $orderBy: AllRepositoriesOrderBy
+//     $orderDirection: OrderDirection
+//   ) {
+//     repositories(
+//       first: $first
+//       after: $after
+//       searchKeyword: $searchKeyword
+//       orderBy: $orderBy
+//       orderDirection: $orderDirection
+//     ) {
 //       edges {
 //         node {
 //           ...RepoDetails
@@ -49,13 +71,39 @@ export const ME = gql`
 `;
 
 export const GET_REPO = gql`
-  query getOneRepo($id: ID!) {
+  query getOneRepo($id: ID!, $first: Int, $after: String) {
     repository(id: $id) {
       ...RepoDetails
+      reviews(first: $first, after: $after) {
+        edges {
+          node {
+            ...ReviewDetails
+            user {
+              ...UserDetails
+            }
+          }
+          cursor
+        }
+        pageInfo {
+          ...PageInfo
+        }
+      }
     }
   }
   ${REPO_DETAILS}
+  ${REVIEW_DETAILS}
+  ${PAGE_INFO}
+  ${USER_DETAILS}
 `;
+
+// export const GET_REPO = gql`
+//   query getOneRepo($id: ID!) {
+//     repository(id: $id) {
+//       ...RepoDetails
+//     }
+//   }
+//   ${REPO_DETAILS}
+// `;
 
 export const GET_REVIEWS = gql`
   query getReviews($id: ID!) {

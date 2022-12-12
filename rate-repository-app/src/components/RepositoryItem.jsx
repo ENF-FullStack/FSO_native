@@ -57,11 +57,14 @@ const Repository = ({ repository, onOpenGithub }) => {
 
 const RepoItem = () => {
   const { id } = useParams();
-  const { repository } = useRepository(id);
-  const { reviews } = useReviews(id);
+  const { repository, fetchMore } = useRepository({ id, first: 3 });
+  // const { reviews } = useReviews(id);
 
   const repo = repository ? repository : {};
-  const review = reviews ? reviews.map(({ node }) => node) : [];
+  // const review = reviews ? reviews.map(({ node }) => node) : [];
+  const reviews = repository
+    ? repository.reviews.edges.map(({ node }) => node)
+    : [];
 
   // console.log('Repo: ',repo)
   // console.log('Reviews: ',review)
@@ -70,15 +73,21 @@ const RepoItem = () => {
     Linking.openURL(repo.url);
   };
 
+  const onEndReach = () => {
+    fetchMore();
+  };
+
   return (
     <FlatList
-      data={review}
+      data={reviews}
       renderItem={({ item }) => <RevItemView review={item} />}
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => (
         <Repository repository={repo} onOpenGithub={onOpenGithub} />
       )}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

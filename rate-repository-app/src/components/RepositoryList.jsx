@@ -38,41 +38,48 @@ const RepositoryListHeader = ({ orderBy, onOrderBy, filter, onFilter }) => {
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
   return (
-    <Provider>
-      <View>
-        <Searchbar
-          value={filter}
-          onChangeText={onFilter}
-          placeholder="Type to filter"
-        ></Searchbar>
-        <TextInput
-          style={{
-            width: 300,
-            backgroundColor: "transparent",
-            margin: 0,
-            padding: 0,
-          }}
-          label="Choice"
-          value={orderBy}
-          onChangeText={(itemValue) => onOrderBy(itemValue)}
-        />
-        <Menu
-          visible={visible}
-          onDismiss={closeMenu}
-          anchor={
-            <Button onPress={openMenu} icon="menu" dark={true} color="#ffffff">
-              Show menu
-            </Button>
-          }
-          onValueChange={onOrderBy}
-          selectedValue={orderBy}
-        >
-          {orderOptions.map(({ value, title }) => (
-            <Menu.Item key={value} title={title} value={value} />
-          ))}
-        </Menu>
-      </View>
-    </Provider>
+    <View style={{ zIndex: 98 }}>
+      <Provider>
+        <View style={{ zIndex: 99, position: "relative" }}>
+          <Searchbar
+            value={filter}
+            onChangeText={onFilter}
+            placeholder="Type to filter"
+          ></Searchbar>
+          <TextInput
+            style={{
+              width: 300,
+              backgroundColor: "transparent",
+              margin: 0,
+              padding: 10,
+            }}
+            label="Choice"
+            value={orderBy}
+            onChangeText={(itemValue) => onOrderBy(itemValue)}
+          />
+          <Menu
+            visible={visible}
+            onDismiss={closeMenu}
+            anchor={
+              <Button
+                onPress={openMenu}
+                icon="menu"
+                color="#fff"
+                dark={true}
+                compact={true}
+              ></Button>
+            }
+            onValueChange={onOrderBy}
+            selectedValue={orderBy}
+            style={{ position: "absolute", zindex: 100 }}
+          >
+            {orderOptions.map(({ value, title }) => (
+              <Menu.Item key={value} title={title} value={value} />
+            ))}
+          </Menu>
+        </View>
+      </Provider>
+    </View>
   );
 };
 
@@ -82,6 +89,7 @@ export const RepositoryListContainer = ({
   filter,
   onFilter,
   repositories,
+  onEndReach,
 }) => {
   const navigate = useNavigate();
 
@@ -107,10 +115,14 @@ export const RepositoryListContainer = ({
         />
       }
       renderItem={({ item }) => (
-        <Pressable onPress={() => onOpenRepo(item.id)}>
-          <RepoItemView repository={item} />
-        </Pressable>
+        <View>
+          <Pressable onPress={() => onOpenRepo(item.id)}>
+            <RepoItemView repository={item} />
+          </Pressable>
+        </View>
       )}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };
@@ -120,14 +132,15 @@ const RepositoryList = () => {
   const [filter, setFilter] = useState("");
   const [debounced] = useDebounce(filter, 500);
 
-  const { repositories } = useRepositories({
+  const { repositories, fetchMore } = useRepositories({
+    first: 5,
     ...orderValues[orderBy],
     searchKeyword: debounced,
   });
 
-  // if (repositories.loading) {
-  //   return <View><Text>loading repositories...</Text></View>
-  // }
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
@@ -136,6 +149,7 @@ const RepositoryList = () => {
       onOrderBy={(orderBy) => setOrderBy(orderBy)}
       filter={filter}
       onFilter={(filter) => setFilter(filter)}
+      onEndReach={onEndReach}
     />
   );
 };

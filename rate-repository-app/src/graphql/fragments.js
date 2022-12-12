@@ -28,3 +28,21 @@ export const REVIEW_DETAILS = gql`
     text
   }
 `;
+
+export const PAGE_INFO = gql`
+  fragment PageInfo on PageInfo {
+    endCursor
+    startCursor
+    hasNextPage
+    hasPreviousPage
+  }
+`;
+
+export const USER_DETAILS = gql`
+  fragment UserDetails on User {
+    id
+    username
+    createdAt
+    reviewCount
+  }
+`;
