@@ -52,7 +52,6 @@ const validationSchema = yup.object().shape({
 });
 
 const SignUpForm = ({ onSubmit }) => {
-  console.log("signupform");
   return (
     <View style={styles.credentials}>
       <FormikTextInput name="username" placeholder="Username" />

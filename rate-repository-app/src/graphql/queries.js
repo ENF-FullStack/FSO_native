@@ -2,8 +2,20 @@ import { gql } from "@apollo/client";
 import { REPO_DETAILS, REVIEW_DETAILS } from "./fragments";
 
 export const GET_REPOS = gql`
-  query {
-    repositories {
+  query (
+    $first: Int
+    $after: String
+    $searchKeyword: String
+    $orderBy: AllRepositoriesOrderBy
+    $orderDirection: OrderDirection
+  ) {
+    repositories(
+      first: $first
+      after: $after
+      searchKeyword: $searchKeyword
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
       edges {
         node {
           ...RepoDetails
@@ -13,6 +25,19 @@ export const GET_REPOS = gql`
   }
   ${REPO_DETAILS}
 `;
+
+// export const GET_REPOS = gql`
+//   query {
+//     repositories {
+//       edges {
+//         node {
+//           ...RepoDetails
+//         }
+//       }
+//     }
+//   }
+//   ${REPO_DETAILS}
+// `;
 
 export const ME = gql`
   query {
