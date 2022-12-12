@@ -21,7 +21,7 @@ export const RepositoryListContainer = ({
 }) => {
   const navigate = useNavigate();
 
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
@@ -37,9 +37,11 @@ export const RepositoryListContainer = ({
     <Provider>
       <View
         style={{
-          paddingTop: 50,
+          paddingTop: 20,
           flexDirection: "row",
           justifyContent: "center",
+          color: "#ffffff",
+          fontWeight: "bold",
         }}
       >
         <FlatList
@@ -50,21 +52,21 @@ export const RepositoryListContainer = ({
               visible={visible}
               onDismiss={closeMenu}
               anchor={<Button onPress={openMenu}>Show menu</Button>}
-              selectedValue={sortBy}
-              onValueChange={(itemValue) => setSortBy(itemValue)}
+              // selectedValue={sortBy}
+              // onValueChange={(itemValue) => setSortBy(itemValue)}
             >
               <Menu.Item
-                onPress={() => {}}
+                onPress={() => setSortBy("latest")}
                 title="Latest repositories"
                 value="latest"
               />
               <Menu.Item
-                onPress={() => {}}
+                onPress={() => setSortBy("highestRated")}
                 title="Highest rated repositories"
                 value="highestRated"
               />
               <Menu.Item
-                onPress={() => {}}
+                onPress={() => setSortBy("lowestRated")}
                 title="Lowest rated repositories"
                 value="lowestRated"
               />
