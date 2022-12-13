@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 const initValues = {
   username: "",
   password: "",
-  confirmPassword: "",
+  passwordConfirm: "",
 };
 
 const validationSchema = yup.object().shape({

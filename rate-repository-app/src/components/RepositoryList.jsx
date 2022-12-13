@@ -12,6 +12,24 @@ const styles = StyleSheet.create({
   separator: {
     height: 10,
   },
+  middleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "blue",
+  },
+  leftContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    backgroundColor: "green",
+  },
+  rightContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
 });
 
 const orderOptions = [
@@ -33,50 +51,61 @@ const orderValues = {
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
+//! 10.23 sorting pop-up menu renders behind repo items
+//* testing different sorting not available until fix is found
+//? 10.24 filtering works, deleting filter does not update pagination
+
 const RepositoryListHeader = ({ orderBy, onOrderBy, filter, onFilter }) => {
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
   return (
-    <View style={{ zIndex: 98 }}>
+    <View>
       <Provider>
-        <View style={{ zIndex: 99, position: "relative" }}>
+        <View style={{ zIndex: 2 }}>
           <Searchbar
             value={filter}
             onChangeText={onFilter}
             placeholder="Type to filter"
           ></Searchbar>
-          <TextInput
-            style={{
-              width: 300,
-              backgroundColor: "transparent",
-              margin: 0,
-              padding: 10,
-            }}
-            label="Choice"
-            value={orderBy}
-            onChangeText={(itemValue) => onOrderBy(itemValue)}
-          />
-          <Menu
-            visible={visible}
-            onDismiss={closeMenu}
-            anchor={
-              <Button
-                onPress={openMenu}
-                icon="menu"
-                color="#fff"
-                dark={true}
-                compact={true}
-              ></Button>
-            }
-            onValueChange={onOrderBy}
-            selectedValue={orderBy}
-            style={{ position: "absolute", zindex: 100 }}
-          >
-            {orderOptions.map(({ value, title }) => (
-              <Menu.Item key={value} title={title} value={value} />
-            ))}
-          </Menu>
+          <View style={styles.middleContainer}>
+            <View style={styles.leftContainer}>
+              <TextInput
+                style={{
+                  width: 300,
+                  backgroundColor: "transparent",
+                  margin: 0,
+                  padding: 10,
+                }}
+                label="Choice"
+                value={orderBy}
+                onChangeText={(itemValue) => onOrderBy(itemValue)}
+              />
+            </View>
+            <View style={styles.rightContainer}>
+              <View style={{ zIndex: 3, position: "absolute" }}>
+                <Menu
+                  visible={visible}
+                  onDismiss={closeMenu}
+                  anchor={
+                    <Button
+                      onPress={openMenu}
+                      icon="menu"
+                      color="#fff"
+                      dark={true}
+                      compact={true}
+                    ></Button>
+                  }
+                  onValueChange={onOrderBy}
+                  selectedValue={orderBy}
+                >
+                  {orderOptions.map(({ value, title }) => (
+                    <Menu.Item key={value} title={title} value={value} />
+                  ))}
+                </Menu>
+              </View>
+            </View>
+          </View>
         </View>
       </Provider>
     </View>
@@ -106,6 +135,15 @@ export const RepositoryListContainer = ({
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       keyExtractor={(item, index) => index.toString()}
+      CellRendererComponent={({ children }) => children}
+      removeClippedSubviews={false}
+      renderItem={({ item }) => (
+        <View>
+          <Pressable onPress={() => onOpenRepo(item.id)}>
+            <RepoItemView repository={item} />
+          </Pressable>
+        </View>
+      )}
       ListHeaderComponent={
         <RepositoryListHeader
           orderBy={orderBy}
@@ -114,13 +152,6 @@ export const RepositoryListContainer = ({
           onFilter={onFilter}
         />
       }
-      renderItem={({ item }) => (
-        <View>
-          <Pressable onPress={() => onOpenRepo(item.id)}>
-            <RepoItemView repository={item} />
-          </Pressable>
-        </View>
-      )}
       onEndReached={onEndReach}
       onEndReachedThreshold={0.5}
     />

@@ -36,31 +36,6 @@ export const GET_REPOS = gql`
   ${PAGE_INFO}
 `;
 
-// export const GET_REPOS = gql`
-//   query (
-//     $first: Int
-//     $after: String
-//     $searchKeyword: String
-//     $orderBy: AllRepositoriesOrderBy
-//     $orderDirection: OrderDirection
-//   ) {
-//     repositories(
-//       first: $first
-//       after: $after
-//       searchKeyword: $searchKeyword
-//       orderBy: $orderBy
-//       orderDirection: $orderDirection
-//     ) {
-//       edges {
-//         node {
-//           ...RepoDetails
-//         }
-//       }
-//     }
-//   }
-//   ${REPO_DETAILS}
-// `;
-
 export const ME = gql`
   query {
     me {
@@ -95,15 +70,6 @@ export const GET_REPO = gql`
   ${PAGE_INFO}
   ${USER_DETAILS}
 `;
-
-// export const GET_REPO = gql`
-//   query getOneRepo($id: ID!) {
-//     repository(id: $id) {
-//       ...RepoDetails
-//     }
-//   }
-//   ${REPO_DETAILS}
-// `;
 
 export const GET_REVIEWS = gql`
   query getReviews($id: ID!) {
